@@ -6,9 +6,9 @@ import CheckWinner from './Logic/CheckWinner';
 import { BoxModel } from './model';
 
 function App() {
-
   const [board, setBoard] = useState<BoxModel[]>([]);
   const [turn, setTurn] = useState<number>(0);
+  const [run, setRun] = useState<boolean>(true);
   const players = ['O', 'X'];
 
   const [availableBoxes, setAvailableBoxes] = useState<boolean[]>([]);
@@ -39,7 +39,10 @@ function App() {
         players={players}
         availableBoxes={availableBoxes}
         setAvailableBoxes={setAvailableBoxes}
-        setWhatHappened={setWhatHappened}/>
+        setWhatHappened={setWhatHappened}
+        run={run}
+        setRun={setRun}/>
+
       <Result whatHappened={whatHappened} />
     </div>
   );

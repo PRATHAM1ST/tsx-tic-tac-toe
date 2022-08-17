@@ -11,16 +11,21 @@ interface props {
     players: string[],
     availableBoxes: boolean [],
     setAvailableBoxes: React.Dispatch<React.SetStateAction<boolean[]>>,
-    setWhatHappened: React.Dispatch<React.SetStateAction<string>>
+    setWhatHappened: React.Dispatch<React.SetStateAction<string>>,
+    run: boolean,
+    setRun: React.Dispatch<React.SetStateAction<boolean>>
+
 }
 
-const Board: FC <props> = ({board, setBoard, turn, setTurn, players, availableBoxes, setAvailableBoxes, setWhatHappened}) => {
+const Board: FC <props> = ({board, setBoard, turn, setTurn, players, availableBoxes, setAvailableBoxes, setWhatHappened, run, setRun}) => {
 
+    
     const handleClick = (targetElem: React.MouseEvent<HTMLDivElement, MouseEvent>) =>{
 
         const targetElemId = parseInt(targetElem.currentTarget.id)
 
-        if(availableBoxes[targetElemId]){
+
+        if(availableBoxes[targetElemId] && run){
 
             let tempBoard : BoxModel[] = board;
             let tempAvailableBoxes : boolean[] = availableBoxes;
@@ -35,7 +40,9 @@ const Board: FC <props> = ({board, setBoard, turn, setTurn, players, availableBo
             let result = CheckWinner(board);
 
             if(result){
-                setWhatHappened(result)
+                setWhatHappened(result);
+                setRun(false);
+                return;
             }
             else{
                 setWhatHappened(`Turn: ${players[1 - turn]}`)
