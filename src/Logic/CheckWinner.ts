@@ -38,7 +38,7 @@ const CheckWinner = (board : BoxModel[]) =>{
         }
 
         if(notSame){
-            return `${tempBoard[i * boardLength]} winner`;
+            return tempBoard[i * boardLength];
         }
 
 
@@ -53,7 +53,7 @@ const CheckWinner = (board : BoxModel[]) =>{
         }
 
         if(notSame){
-            return `${tempBoard[i]} winner`;
+            return tempBoard[i];
         }
 
         // diagonals
@@ -65,7 +65,7 @@ const CheckWinner = (board : BoxModel[]) =>{
             })
     
             if(diagonal){
-                return `${diagonal} winner`;
+                return diagonal;
             }
         }
 
@@ -76,8 +76,7 @@ const CheckWinner = (board : BoxModel[]) =>{
         
     }
     
-
-    return false
+    return ''
 }
 
 export default CheckWinner

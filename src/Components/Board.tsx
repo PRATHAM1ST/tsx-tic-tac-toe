@@ -1,7 +1,8 @@
 import { BoxModel } from '../model';
 import './Components.css';
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import CheckWinner from '../Logic/CheckWinner';
+import Ai from '../Logic/Ai';
 
 interface props {
     board: BoxModel[],
@@ -17,37 +18,55 @@ interface props {
 
 }
 
+
+
 const Board: FC <props> = ({board, setBoard, turn, setTurn, players, availableBoxes, setAvailableBoxes, setWhatHappened, run, setRun}) => {
 
+
+    const printWinner = ()=>{
+        let result = CheckWinner(board);
     
-    const handleClick = (targetElem: React.MouseEvent<HTMLDivElement, MouseEvent>) =>{
+        if(result){
+            switch (result){
+                case 'Tie':
+                    setWhatHappened('Tie');
+                    break;
+                default:
+                    setWhatHappened(result + " Winner");
+                    break;
+            }
+            setRun(false)
+        }
+        else{
+            return
+        }
+    }
 
+    
+    const handleClick = async (targetElem: React.MouseEvent<HTMLDivElement, MouseEvent>) =>{
+        
         const targetElemId = parseInt(targetElem.currentTarget.id)
-
-
+        
+        
         if(availableBoxes[targetElemId] && run){
-
             let tempBoard : BoxModel[] = board;
             let tempAvailableBoxes : boolean[] = availableBoxes;
 
-            tempBoard[targetElemId].value = players[turn];
+            tempBoard[targetElemId].value = 'O';
             tempAvailableBoxes[targetElemId] = false;
+            
+            printWinner();
 
+            const AiMove : number = Ai(board);
+
+            tempBoard[AiMove].value = 'X';
+            tempAvailableBoxes[AiMove] = false; 
+
+            printWinner();
+            
             setBoard(tempBoard);
             setAvailableBoxes(tempAvailableBoxes);
-            setTurn(1 - turn);
-
-            let result = CheckWinner(board);
-
-            if(result){
-                setWhatHappened(result);
-                setRun(false);
-                return;
-            }
-            else{
-                setWhatHappened(`Turn: ${players[1 - turn]}`)
-            }
-
+            console.table(tempBoard, ['value'])
         }
     }
 
